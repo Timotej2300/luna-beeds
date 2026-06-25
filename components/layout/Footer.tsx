@@ -57,7 +57,7 @@ export default function Footer() {
 
         <div className="mt-10 pt-6 border-t border-pink-200 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-gray-500">
           <p>© {new Date().getFullYear()} Luna&Beeds. Všetky práva vyhradené.</p>
-          <p>Vyrobené s ❤️ na Slovensku</p>
+          <p>Vyrobené s ❤️ od Timoteja</p>
         </div>
       </div>
     </footer>
