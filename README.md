@@ -2,22 +2,6 @@
 
 Moderný luxusný e-shop pre handmade šperky, postavený na Next.js 16, Supabase, Stripe a PayPal.
 
-## Rýchly štart
-
-```bash
-git clone ...
-cd luna-beeds
-npm install
-cp .env.example .env.local
-# Vyplňte .env.local
-npm run dev
-```
-
-## Nastavenie Supabase
-
-1. Vytvorte projekt na supabase.com
-2. SQL Editor → skopírujte `supabase/migrations/001_initial.sql` → Run
-
 ## Štruktúra
 
 ```
@@ -42,11 +26,14 @@ supabase/migrations/ # SQL migrácie
 - Framer Motion animácie
 - Sitemap + robots.txt
 
-## Deploy (Vercel)
-
-1. Push na GitHub
-2. Import na vercel.com
-3. Pridajte Environment Variables
-4. Deploy!
-
 Stripe webhook: `https://your-domain.vercel.app/api/stripe/webhook`
+
+  ## HESLÁ
+
+- Email: lunabeeds@gmail.com
+- Heslo: Lb12345690
+-----------------------------
+- DashBoard: 
+- Email: admin@lunabeeds.sk
+- heslo: '2U<t54bP]/@
+
