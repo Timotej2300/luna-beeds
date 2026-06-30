@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { User, ShoppingBag, Heart, LogOut } from 'lucide-react'
+import { User, ShoppingBag, Heart, LogOut, Ticket } from 'lucide-react'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = { title: 'Môj účet' }
@@ -40,6 +40,7 @@ export default async function AccountPage() {
             { href: '/account/orders', icon: ShoppingBag, label: 'Moje objednávky', color: '#C2185B' },
             { href: '/account/wishlist', icon: Heart, label: 'Wishlist', color: '#880E4F' },
             { href: '/account/profile', icon: User, label: 'Upraviť profil', color: '#FFB6D9' },
+            { href: '/account/tickets', icon: Ticket, label: 'Moje tickety', color: '#2196F3' },
           ].map(({ href, icon: Icon, label, color }) => (
             <Link key={href} href={href}
               className="bg-white rounded-3xl shadow-soft p-6 border border-pink-50 hover:shadow-card transition-all group flex flex-col items-center gap-3 text-center"
