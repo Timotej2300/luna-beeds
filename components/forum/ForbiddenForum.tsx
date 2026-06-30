@@ -3,7 +3,13 @@
 import { motion } from "framer-motion";
 import { ShieldAlert } from "lucide-react";
 
-export function ForbiddenForum() {
+interface ForbiddenForumProps {
+  message?: string;
+}
+
+export function ForbiddenForum({
+  message = "Nemáš oprávnenie vstúpiť do tejto sekcie.",
+}: ForbiddenForumProps) {
   return (
     <div className="flex min-h-[60vh] items-center justify-center px-4">
       <motion.div
@@ -16,9 +22,7 @@ export function ForbiddenForum() {
           <ShieldAlert className="h-7 w-7 text-[#C2185B]" />
         </div>
         <h1 className="text-xl font-bold text-neutral-900">403</h1>
-        <p className="text-sm text-neutral-600">
-          Nemáš oprávnenie vstúpiť do tejto sekcie.
-        </p>
+        <p className="text-sm text-neutral-600">{message}</p>
       </motion.div>
     </div>
   );

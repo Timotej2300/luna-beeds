@@ -9,14 +9,16 @@ import type { ForumPost } from "@/types/forum";
 
 interface AdminForumPostsListProps {
   initialPosts: ForumPost[];
+  forumNameById: Record<string, string>;
   currentUserId: string;
-  isOwner: boolean;
+  hasFullAccess: boolean;
 }
 
 export function AdminForumPostsList({
   initialPosts,
+  forumNameById,
   currentUserId,
-  isOwner,
+  hasFullAccess,
 }: AdminForumPostsListProps) {
   const [posts, setPosts] = useState(initialPosts);
 
@@ -38,6 +40,7 @@ export function AdminForumPostsList({
       <table className="w-full text-left text-sm">
         <thead>
           <tr className="border-b border-neutral-100 text-neutral-500">
+            <th className="px-5 py-3 font-medium">Fórum</th>
             <th className="px-5 py-3 font-medium">Nadpis</th>
             <th className="px-5 py-3 font-medium">Autor</th>
             <th className="px-5 py-3 font-medium">Dátum</th>
@@ -48,7 +51,7 @@ export function AdminForumPostsList({
         </thead>
         <tbody>
           {posts.map((post) => {
-            const canDelete = isOwner || post.author_id === currentUserId;
+            const canDelete = hasFullAccess || post.author_id === currentUserId;
             const authorName = post.author
               ? `${post.author.first_name} ${post.author.last_name}`.trim()
               : "Neznámy";
@@ -60,6 +63,9 @@ export function AdminForumPostsList({
                 animate={{ opacity: 1 }}
                 className="border-b border-neutral-50 last:border-0 hover:bg-[#FFF6FA]"
               >
+                <td className="px-5 py-3 text-neutral-500">
+                  {forumNameById[post.forum_id] ?? "—"}
+                </td>
                 <td className="max-w-xs truncate px-5 py-3 font-medium text-neutral-800">
                   {post.title}
                 </td>

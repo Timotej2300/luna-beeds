@@ -16,10 +16,10 @@ import type { ForumPost as ForumPostType } from "@/types/forum";
 interface ForumPostProps {
   post: ForumPostType;
   currentUserId: string | null;
-  isOwner: boolean;
+  hasFullAccess: boolean;
 }
 
-export function ForumPost({ post, currentUserId, isOwner }: ForumPostProps) {
+export function ForumPost({ post, currentUserId, hasFullAccess }: ForumPostProps) {
   const [showComments, setShowComments] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editTitle, setEditTitle] = useState(post.title);
@@ -28,8 +28,8 @@ export function ForumPost({ post, currentUserId, isOwner }: ForumPostProps) {
   const removePost = useForumStore((s) => s.removePost);
   const updatePostInStore = useForumStore((s) => s.updatePost);
 
-  const canEdit = currentUserId === post.author_id || isOwner;
-  const canDelete = currentUserId === post.author_id || isOwner;
+  const canEdit = currentUserId === post.author_id || hasFullAccess;
+  const canDelete = currentUserId === post.author_id || hasFullAccess;
 
   const authorName = post.author
     ? `${post.author.first_name} ${post.author.last_name}`.trim()
@@ -194,7 +194,7 @@ export function ForumPost({ post, currentUserId, isOwner }: ForumPostProps) {
             postId={post.id}
             postAuthorId={post.author_id}
             currentUserId={currentUserId}
-            isOwner={isOwner}
+            hasFullAccess={hasFullAccess}
           />
         )}
       </div>

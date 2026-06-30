@@ -5,27 +5,36 @@
 export const ROLE_NAMES = {
   VLASTNIK: "Vlastník",
   SPOLUVLASTNIK: "Spoluvlastník",
+  SPRAVA: "Správa",
+  SPRAVA_WEBU: "Správa Webu",
   MANAZER: "Manažér",
   OBCHODNY_MANAZER: "Obchodný manažér",
-  SPRAVA: "Správa",
-  DESIGN: "Design",
   QA: "QA",
+  DESIGN: "Design",
 } as const;
 
 /**
- * Role, ktoré majú prístup do Fóra.
- * Zadanie spomína "Designer" a "Sprava Fora" - v existujúcej DB seed dátach
- * sa volajú "Design" a "Správa". "Sprava Fora" je nová rola špecifická pre
- * fórum a je doplnená v migrácii supabase/migrations/forum_rls.sql.
+ * Role, ktoré môžu vytvárať FÓRA (kategórie) a PRÍSPEVKY v nich.
+ * Toto sú všetky administratívne role v systéme.
  */
-export const FORUM_ALLOWED_ROLES = [
+export const FORUM_CREATOR_ROLES = [
   "Vlastník",
-  "Design",
+  "Spoluvlastník",
   "Správa",
-  "Správa Fóra",
+  "Správa Webu",
+  "Manažér",
+  "Obchodný manažér",
+  "QA",
+  "Design",
 ] as const;
 
-export type ForumAllowedRole = (typeof FORUM_ALLOWED_ROLES)[number];
+export type ForumCreatorRole = (typeof FORUM_CREATOR_ROLES)[number];
+
+/**
+ * Role s plnými právami - môžu upraviť/zmazať čokoľvek (cudzie príspevky,
+ * komentáre, celé fóra), nie len svoj vlastný obsah.
+ */
+export const FORUM_FULL_ACCESS_ROLES = ["Vlastník", "Správa Webu"] as const;
 
 export interface Role {
   id: string;
@@ -38,9 +47,24 @@ export interface Role {
   created_at: string;
 }
 
-export function hasForumAccess(roleName: string | null | undefined): boolean {
+/**
+ * Čítanie fóra, príspevkov, komentárov a lajkovanie/komentovanie
+ * je dostupné každému prihlásenému používateľovi - táto funkcia
+ * existuje len pre symetriu API, vždy vráti true (kontrola prihlásenia
+ * sa rieši samostatne podľa existencie session, nie podľa role).
+ */
+export function canViewForum(): boolean {
+  return true;
+}
+
+export function canCreateForumOrPost(roleName: string | null | undefined): boolean {
   if (!roleName) return false;
-  return (FORUM_ALLOWED_ROLES as readonly string[]).includes(roleName);
+  return (FORUM_CREATOR_ROLES as readonly string[]).includes(roleName);
+}
+
+export function hasFullForumAccess(roleName: string | null | undefined): boolean {
+  if (!roleName) return false;
+  return (FORUM_FULL_ACCESS_ROLES as readonly string[]).includes(roleName);
 }
 
 export function isOwner(roleName: string | null | undefined): boolean {

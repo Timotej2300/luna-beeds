@@ -14,10 +14,11 @@ import { useForumStore } from "@/store/forum";
 const MAX_IMAGES = 10;
 
 interface ForumComposerProps {
+  forumId: string;
   currentUserId: string;
 }
 
-export function ForumComposer({ currentUserId }: ForumComposerProps) {
+export function ForumComposer({ forumId, currentUserId }: ForumComposerProps) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [images, setImages] = useState<File[]>([]);
@@ -55,6 +56,7 @@ export function ForumComposer({ currentUserId }: ForumComposerProps) {
       const supabase = createClient();
       const postId = await createForumPost(
         supabase,
+        forumId,
         currentUserId,
         title.trim(),
         content.trim()

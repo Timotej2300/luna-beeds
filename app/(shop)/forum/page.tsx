@@ -1,27 +1,29 @@
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentAppUser } from "@/lib/supabase/forum";
-import { hasForumAccess, isOwner } from "@/types/roles";
-import { ForumFeed } from "./components/ForumFeed";
-import { ForbiddenForum } from "./components/ForbiddenForum";
+import { canCreateForumOrPost } from "@/types/roles";
+import { ForumsFeed } from "./components/ForumsFeed";
+import { ForbiddenForum } from "@/components/forum/ForbiddenForum";
 
 export const metadata = {
   title: "Forum | Luna&Beeds",
 };
 
-export default async function ForumPage() {
+export default async function ForumIndexPage() {
   const supabase = await createClient();
   const appUser = await getCurrentAppUser(supabase);
 
-  // Iba Vlastník, Designer (Design), Správa a Správa Fóra majú prístup.
-  // Neprihlásený používateľ alebo iná rola -> 403.
-  if (!appUser || !hasForumAccess(appUser.roleName)) {
-    return <ForbiddenForum />;
+  // Fórum vidí každý prihlásený používateľ (zákazník aj admin).
+  // Neprihlásený používateľ -> 403.
+  if (!appUser) {
+    return (
+      <ForbiddenForum message="Nemáš oprávnenie vstúpiť do tejto sekcie. Prihlás sa, prosím." />
+    );
   }
 
   return (
-    <ForumFeed
+    <ForumsFeed
       currentUserId={appUser.id}
-      isOwner={isOwner(appUser.roleName)}
+      canManage={canCreateForumOrPost(appUser.roleName)}
     />
   );
 }

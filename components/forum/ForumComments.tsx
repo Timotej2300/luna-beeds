@@ -17,14 +17,14 @@ interface ForumCommentsProps {
   postId: string;
   postAuthorId: string;
   currentUserId: string | null;
-  isOwner: boolean;
+  hasFullAccess: boolean;
 }
 
 export function ForumComments({
   postId,
   postAuthorId,
   currentUserId,
-  isOwner,
+  hasFullAccess,
 }: ForumCommentsProps) {
   const [comments, setComments] = useState<ForumCommentType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -85,7 +85,7 @@ export function ForumComments({
   }
 
   function canDeleteComment(comment: ForumCommentType): boolean {
-    if (isOwner) return true;
+    if (hasFullAccess) return true;
     return currentUserId === comment.author_id;
   }
 
