@@ -23,6 +23,7 @@ const NAV = [
   { href: '/admin/newsletter', icon: Mail, label: 'Newsletter' },
   { href: '/admin/announcements', icon: Megaphone, label: 'Announcement' },
   { href: '/admin/messages', icon: MessageSquare, label: 'Správy' },
+  { href: '/admin/tickets', icon: MessageSquare, label: 'Tickety' },
   { href: '/admin/statistics', icon: BarChart3, label: 'Štatistiky' },
   { href: '/admin/roles', icon: Shield, label: 'Role' },
   { href: '/admin/settings', icon: Settings, label: 'Nastavenia' },
