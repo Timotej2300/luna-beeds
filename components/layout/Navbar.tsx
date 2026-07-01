@@ -12,6 +12,7 @@ const links = [
   { href: '/products', label: 'Produkty' },
   { href: '/categories', label: 'Kategórie' },
   { href: '/custom-bracelet', label: '✨ Custom Naramok' },
+  { href: '/forum', label: 'Fórum' },
   { href: '/o-nas', label: 'O nás' },
   { href: '/contact', label: 'Kontakt' },
 ]
