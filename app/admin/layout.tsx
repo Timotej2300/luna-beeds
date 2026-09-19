@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import {
   LayoutDashboard, Package, Tag, ShoppingCart, Users, Truck,
   CreditCard, Megaphone, MessageSquare, Settings, BarChart3,
-  Mail, Ticket, Shield, Sparkles, Menu, X, ChevronRight, LogOut
+  Mail, Ticket, Shield, Sparkles, Menu, X, ChevronRight, LogOut, Store
 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
@@ -23,6 +23,7 @@ const NAV = [
   { href: '/admin/newsletter', icon: Mail, label: 'Newsletter' },
   { href: '/admin/announcements', icon: Megaphone, label: 'Announcement' },
   { href: '/admin/messages', icon: MessageSquare, label: 'Správy' },
+  { href: '/admin/stores', icon: Store, label: 'Predajne' },
   { href: '/admin/forum', icon: MessageSquare, label: 'Fórum' },
   { href: '/admin/tickets', icon: MessageSquare, label: 'Tickety' },
   { href: '/admin/statistics', icon: BarChart3, label: 'Štatistiky' },

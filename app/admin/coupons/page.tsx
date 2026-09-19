@@ -12,7 +12,7 @@ export default function AdminCouponsPage() {
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [editing, setEditing] = useState<Coupon | null>(null)
-  const [form, setForm] = useState({ code: '', type: 'percentage' as 'percentage' | 'fixed', value: '', min_order: '', max_uses: '', date_from: '', date_to: '', is_active: true })
+  const [form, setForm] = useState({ code: '', type: 'percentage' as 'percentage' | 'fixed', value: '', min_order: '', max_uses: '', date_from: '', date_to: '', is_active: true, channel: 'all' as 'all' | 'ecommerce' | 'pos' })
 
   const load = async () => {
     const supabase = createClient()
@@ -25,15 +25,15 @@ export default function AdminCouponsPage() {
 
   const openEdit = (c?: Coupon) => {
     setEditing(c || null)
-    setForm(c ? { code: c.code, type: c.type, value: String(c.value), min_order: String(c.min_order || ''), max_uses: String(c.max_uses || ''), date_from: c.date_from || '', date_to: c.date_to || '', is_active: c.is_active }
-      : { code: '', type: 'percentage', value: '', min_order: '', max_uses: '', date_from: '', date_to: '', is_active: true })
+    setForm(c ? { code: c.code, type: c.type, value: String(c.value), min_order: String(c.min_order || ''), max_uses: String(c.max_uses || ''), date_from: c.date_from || '', date_to: c.date_to || '', is_active: c.is_active, channel: (c as any).channel ?? 'all' }
+      : { code: '', type: 'percentage', value: '', min_order: '', max_uses: '', date_from: '', date_to: '', is_active: true, channel: 'all' })
     setModalOpen(true)
   }
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault()
     const supabase = createClient()
-    const data = { code: form.code.toUpperCase(), type: form.type, value: Number(form.value), min_order: form.min_order ? Number(form.min_order) : null, max_uses: form.max_uses ? Number(form.max_uses) : null, date_from: form.date_from || null, date_to: form.date_to || null, is_active: form.is_active, uses: 0 }
+    const data = { code: form.code.toUpperCase(), type: form.type, value: Number(form.value), min_order: form.min_order ? Number(form.min_order) : null, max_uses: form.max_uses ? Number(form.max_uses) : null, date_from: form.date_from || null, date_to: form.date_to || null, is_active: form.is_active, channel: form.channel, uses: 0 }
     const { error } = editing ? await supabase.from('coupons').update(data).eq('id', editing.id) : await supabase.from('coupons').insert(data)
     if (error) { toast.error(error.message); return }
     toast.success('Uložené!'); setModalOpen(false); load()
@@ -122,6 +122,14 @@ export default function AdminCouponsPage() {
               <label className="block text-sm font-medium text-gray-700 mb-1">Platný do</label>
               <input type="date" value={form.date_to} onChange={e => setForm(f => ({ ...f, date_to: e.target.value }))} className={inputCls} />
             </div>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Kanál</label>
+            <select value={form.channel} onChange={e => setForm(f => ({ ...f, channel: e.target.value as any }))} className={inputCls}>
+              <option value="all">Všetky (e-shop + POS)</option>
+              <option value="ecommerce">Len e-shop</option>
+              <option value="pos">Len POS pokladňa</option>
+            </select>
           </div>
           <div className="flex items-center gap-3">
             <input type="checkbox" id="coup_active" checked={form.is_active} onChange={e => setForm(f => ({ ...f, is_active: e.target.checked }))} className="w-4 h-4 accent-[#C2185B]" />

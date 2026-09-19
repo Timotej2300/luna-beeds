@@ -29,6 +29,20 @@ export async function middleware(req: NextRequest) {
     if (!adminUser) return NextResponse.redirect(new URL('/', req.url))
   }
 
+  if (path.startsWith('/pos')) {
+    if (!user) return NextResponse.redirect(new URL('/auth/login?redirect=/pos', req.url))
+    const { data: adminUser } = await supabase
+      .from('admin_users')
+      .select('id, roles(permissions)')
+      .eq('id', user.id)
+      .single()
+    if (!adminUser) return NextResponse.redirect(new URL('/', req.url))
+    const permissions: string[] = (adminUser as any).roles?.permissions ?? []
+    if (!permissions.includes('pos_access')) {
+      return NextResponse.redirect(new URL('/admin/dashboard?error=no_pos_access', req.url))
+    }
+  }
+
   if (path.startsWith('/account') && !user) {
     return NextResponse.redirect(new URL(`/auth/login?redirect=${path}`, req.url))
   }
@@ -37,5 +51,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/account/:path*'],
+  matcher: ['/admin/:path*', '/account/:path*', '/pos/:path*'],
 }
