@@ -23,6 +23,8 @@ export default function LoginClient() {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
     if (error) { toast.error('Nesprávny email alebo heslo.'); setLoading(false); return }
     toast.success('Vitajte späť! 👋')
+    await new Promise(resolve => setTimeout(resolve, 500))
+    window.location.href = redirect
     router.push(redirect)
     router.refresh()
   }
